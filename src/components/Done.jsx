@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 export default function Done() {
   const [schedule, setSchedule] = useState([]);
@@ -11,12 +12,12 @@ export default function Done() {
   const fetchDaysAndGenerate = async () => {
     try {
       // Fetch examDays from DB for display
-      const configRes = await fetch("http://localhost:5000/api/teachers/examconfig");
+      const configRes = await fetch(`${API_BASE}/api/teachers/examconfig`);
       const config = await configRes.json();
       setDays(config?.examDays ?? 0);
 
       // Generate schedule (backend reads examDays from DB internally)
-      const res = await fetch("http://localhost:5000/api/generate-schedule", {
+      const res = await fetch(`${API_BASE}/api/generate-schedule`, {
         method: "POST",
       });
       const data = await res.json();

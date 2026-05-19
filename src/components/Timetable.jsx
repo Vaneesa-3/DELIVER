@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 const SEMESTERS = ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"];
 

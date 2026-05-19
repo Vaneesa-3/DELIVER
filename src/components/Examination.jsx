@@ -7,6 +7,7 @@ const SEMESTERS = {
   odd: ["S1", "S3", "S5", "S7"],
   even: ["S2", "S4", "S6", "S8"],
 };
+const API_BASE = import.meta.env.VITE_API_URL;
 
 export default function Examination({ setGenData }) {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Examination({ setGenData }) {
   const [availableSems, setAvailableSems] = useState(SEMESTERS.odd);
   const [selectedSems, setSelectedSems] = useState([]);
   const [studentStrength, setStudentStrength] = useState({});
-  const CLASS_API = "http://localhost:5000/api/classes";
+  const CLASS_API = `${API_BASE}/api/classes`;
 
   const [classes, setClasses] = useState(
     ALL_CLASSES.map((c) => ({ name: c, capacity: DEFAULT_CAPACITY, selected: false }))
@@ -27,7 +28,7 @@ const [showDaysInput, setShowDaysInput] = useState(false);
     setAvailableSems(sems);
     setSelectedSems([]);
 
-    fetch("http://localhost:5000/api/semesters")
+    fetch(`${API_BASE}/api/semesters`)
       .then((res) => res.json())
       .then((data) => {
         let db = {};
@@ -64,7 +65,7 @@ const [showDaysInput, setShowDaysInput] = useState(false);
     const num = parseInt(value) || 0;
     setStudentStrength((prev) => ({ ...prev, [sem]: num }));
 
-    fetch(`http://localhost:5000/api/semesters/${sem}`, {
+    fetch(`${API_BASE}/api/semesters/${sem}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ strength: num }),
@@ -147,7 +148,7 @@ const handleTeacherPage = async () => {
   const selectedClasses = classes.filter(c => c.selected);
 
   // 🔥 SAVE TO DB FIRST
-  await fetch("http://localhost:5000/api/teachers/seed", {
+  await fetch(`${API_BASE}/api/teachers/seed`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
